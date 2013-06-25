@@ -43,13 +43,11 @@ dy(ind.s_j) 	= EC(flu.J_ERuptake_j) - EC(flu.J_CICR_j) - EC(flu.J_leak_j) ;
 dy(ind.v_j) 	=  - 1/C_m * ( EC(flu.J_K_j)	+ EC(flu.J_R_j) ) + EC(flu.v_coup_j);	
 dy(ind.I_j) 	= EC(flu.IP3_coup_j) + J_PLC - EC(flu.J_degrad_j)  ;
 
-% Myosin crossbridge model
-K1_c = gam_cross*state(ind.Ca_i)^3;
-K6_c = K1_c;
 
-dy(ind.Mp)      = K4_c*state(ind.AMp) + K1_c*SMC(flu.M) - (K2_c + K3_c)*state(ind.Mp);
-dy(ind.AMp)     = K3_c*state(ind.Mp) + K6_c*state(ind.AM) - (K7_c + K5_c)*state(ind.AMp);
-dy(ind.AM)      = K5_c*state(ind.AMp) - (K7_c + K6_c)*state(ind.AM);
+% Hai & Murphy
+dy(ind.Mp)      = K4_c*state(ind.AMp) + SMC(flu.K1_c)*SMC(flu.M) - (SMC(flu.K2_c) + K3_c)*state(ind.Mp);
+dy(ind.AMp)     = K3_c*state(ind.Mp) + SMC(flu.K6_c)*state(ind.AM) - (K7_c + SMC(flu.K5_c))*state(ind.AMp);
+dy(ind.AM)      = SMC(flu.K5_c)*state(ind.AMp) - (K7_c + SMC(flu.K6_c))*state(ind.AM);
 
 % Radius change
 
@@ -84,5 +82,24 @@ dy(ind.R)= R0pas_r/nu_r *(state(ind.R)*P_r/SMC(flu.h_r) - E_r * ((state(ind.R) -
 % 
 % 
 % dy(R)       = 1/nu_r * ( P_r*state(R)/h_r - sigp_r - siga_r);
+
+%% NO pathway 
+
+% NE           
+       dy(ind.Ca_n)       = (((NE(flu.I_Ca))/(2*F*v_spine)-(k_ex*(state(ind.Ca_n)-Ca_rest)))/(1+lambda));                           % cytosolic [Ca2+] in the NE in \muM
+       dy(ind.nNOS_act)   = V_maxNOS*(NE(flu.CaM)-CaM_thresh)/(K_actNOS+NE(flu.CaM)-CaM_thresh)-mu2*state(ind.nNOS_act);            % activated nNOS in \muM
+       dy(ind.NOn)        = V_nNOS*(LArg)/((LArg^2+1)^0.5)*(state(ind.nNOS_act)) - ((state(ind.NOn)-state(ind.NOi))/tau_ni) - (k_O2*state(ind.NOn)^2*On);   % NO concentration in the neuron ; (95)
+                         
+% SMC              
+       dy(ind.NOi)        = (state(ind.NOn)-state(ind.NOi))/tau_ni+(state(ind.NOj)-state(ind.NOi))/tau_ji-k_dno*state(ind.NOi);                % NO concentration in the SMC ; 
+       dy(ind.E_b)        = -k1*state(ind.E_b)*state(ind.NOi)+k_1*state(ind.E_6c) + SMC(flu.k4)*state(ind.E_5c);     
+       dy(ind.E_6c)       = k1*state(ind.E_b)*state(ind.NOi)-k_1*state(ind.E_6c)-k2*state(ind.E_6c)- k3*state(ind.E_6c)*state(ind.NOi);
+       dy(ind.E_5c)       = k3*state(ind.E_6c)*state(ind.NOi)+k2*state(ind.E_6c) - SMC(flu.k4)*state(ind.E_5c);
+       dy(ind.cGMP)       = V_max_sGC*state(ind.E_5c)-(k_pde*state(ind.cGMP)^2)/(K_m_pde+state(ind.cGMP));
+       
+% EC
+%        dfdt(ind.eNOS_act)   =                           -mu2*state(ind.eNOS_act)+g_max*EC(flu.F_tau_w) ;          % (104) without the Ca2+ part
+       dy(ind.eNOS_act)   = ((K_dis*state(ind.Ca_j))/(K_eNOS+state(ind.Ca_j)))-mu2*state(ind.eNOS_act)+g_max*EC(flu.F_tau_w) ;          % (104)
+       dy(ind.NOj)        = V_eNOS*(LArg)/((LArg^2+1)^0.5)*(state(ind.eNOS_act)) - (state(ind.NOj)-state(ind.NOi))/tau_ji   - k_O2*(state(ind.NOj))^2*Oj - state(ind.NOj)*4*3300/(25^2);
 
 end

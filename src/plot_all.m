@@ -5,21 +5,24 @@ all_constants();
 
 linestylle = ':';
 
-a = zeros(1,25);
-s = zeros(1,23);
-e = zeros(1,17);
-f= zeros(1,24);
-dfdt= zeros(1,24);
-t= zeros(1,1);
-input= zeros(1,2);
+n = zeros(1,9);     % fluxes Neuron
+a = zeros(1,25);    % fluxes AC
+s = zeros(1,35);    % fluxes SMC
+e = zeros(1,21);    % fluxes EC
+f = zeros(1,34);    % ODE solutions
+dfdt = zeros(1,34); % ODEs - rate of change
+t = zeros(1,1);     % time
+input = zeros(1,4); % input
 
-acoff   =          0;
-smcoff  =          length(a);
-ecoff   = smcoff + length(s);
-stoff   = ecoff  + length(e);
-dfdtoff = stoff   + length(f);
-tijdoff = dfdtoff+ length(dfdt);
-inputoff= tijdoff+ length(t);
+
+neoff    =           0; 
+acoff    = neoff   + length(n);
+smcoff   = acoff   + length(a);
+ecoff    = smcoff  + length(s);
+stoff    = ecoff   + length(e);
+dfdtoff  = stoff   + length(f);
+tijdoff  = dfdtoff + length(dfdt);
+inputoff = tijdoff + length(t);
 
 
 time = DATA(:,tijdoff+1);
@@ -29,7 +32,7 @@ time = DATA(:,tijdoff+1);
 total=4;
 
 
-figure(54)
+figure(1)
 hold all
 
 subplot(total,1,1)
@@ -69,22 +72,23 @@ ylabel('K_p  [\muM]')
 
 %%
 
-SMCtitle{1}='v_ coup_i';
-SMCtitle{2}='Ca_ coup_i';
-SMCtitle{3}='IP3_ coup_i';
-SMCtitle{4}='rho_i';
-SMCtitle{5}='J_ IP3_i';
-SMCtitle{6}='J_ SRuptake_i';
-SMCtitle{7}='J_ CICR_i';
-SMCtitle{8}='J_ extrusion_i';
-SMCtitle{9}='J_ leak_i';
-SMCtitle{10}='J_ VOCC_i';
-SMCtitle{11}='J _ NaCa_i';
-SMCtitle{12}='J_ NaK_i';
-SMCtitle{13}='J_ Cl_i';
-SMCtitle{14}='J_ K_i';
-SMCtitle{15}='Kactivation_i';
-SMCtitle{16}='J_ degrad_i';
+SMCtitle{flu.v_coup_i}='v_ coup_i';
+SMCtitle{flu.Ca_coup_i}='Ca_ coup_i';
+SMCtitle{flu.IP3_coup_i}='IP3_ coup_i';
+SMCtitle{flu.rho_i}='rho_i';
+SMCtitle{flu.J_IP3_i}='J_ IP3_i';
+SMCtitle{flu.J_SRuptake_i}='J_ SRuptake_i';
+SMCtitle{flu.J_CICR_i}='J_ CICR_i';
+SMCtitle{flu.J_extrusion_i}='J_ extrusion_i';
+SMCtitle{flu.J_leak_i}='J_ leak_i';
+SMCtitle{flu.J_VOCC_i}='J_ VOCC_i';
+SMCtitle{flu.J_NaCa_i}='J _ NaCa_i';
+SMCtitle{flu.J_NaK_i}='J_ NaK_i';
+SMCtitle{flu.J_Cl_i}='J_ Cl_i';
+SMCtitle{flu.J_K_i}='J_ K_i';
+SMCtitle{flu.Kactivation_i}='Kactivation_i';
+SMCtitle{flu.J_degrad_i}='J_ degrad_i';
+SMCtitle{flu.J_stretch_i}='J_stretch_i';
 
 ECtitle{1}='v_ coup_j';
 ECtitle{2}='Ca_ coup_j';
@@ -103,7 +107,7 @@ ECtitle{14}='J_ K_j';
 ECtitle{15}='J_ R_j';
 ECtitle{16}='J_ degrad_j';
 
-figure(101)
+figure(2)
 set(gcf,'Name','SMC fluxes')
 set(gcf,'Position', [24 62 1616 904],...
         'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
@@ -146,7 +150,7 @@ title('J stretch_j')
 
 %% DFDT plot
 
-figure(77)
+figure(3)
 set(gcf,'Name','DFDT')
 set(gcf,'Position', [24 62 1616 904],...
         'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
@@ -224,7 +228,7 @@ MCtitle{2}='[Mp]';
 MCtitle{3}='[AMp]';
 MCtitle{4}='[AM]';
 
-figure
+figure(4)
 set(gcf,'Name','Myosin model and radius')
 
 subplot(3,2,1)
@@ -268,3 +272,48 @@ title('Radius')
 % subplot(2,2,4)
 % plot(time,DATA(:,smcoff+flu.J_NaK_i))
 % title('J NaK_i influx')
+
+
+%% NO pathway
+
+figure(5)
+set(gcf,'Name','NO pathway')
+set(gcf,'Position', [24 62 1616 904],...
+        'PaperPosition', [0.634517 6.34517 20.3046 15.2284]...
+        );
+   
+subplot(4,2,1)
+    plot( time,DATA(:,inputoff+3));
+xlabel('Time [s]')
+ylabel('[Glu] in nM s^{-1}')
+
+subplot(4,2,2)
+    plot( time,DATA(:,inputoff+4));
+xlabel('Time [s]')
+ylabel('wss in Pa')
+
+subplot(4,2,3)
+plot(time, state(:,ind.Ca_n) )
+xlabel('time in s')
+ylabel('[Ca^{2+}]_n in \muM')
+
+subplot(4,2,6)
+plot(time, state(:,ind.eNOS_act))
+xlabel('time in s')
+ylabel('[eNOS_{act}] in \muM')
+
+subplot(4,2,5)
+plot(time, state(:,ind.nNOS_act))
+xlabel('time in s')
+ylabel('[nNOS_{act}] in \muM')
+
+subplot(4,2,7)
+plot(time, state(:,ind.NOn),time, state(:,ind.NOj),time, state(:,ind.NOi))
+xlabel('time in s')
+ylabel('[NO] in \muM')
+legend('[NO]_n','[NO]_j','[NO]_i')
+
+subplot(4,2,8)
+plot(time, state(:,ind.cGMP))
+xlabel('time in s')
+ylabel('[cGMP] in \muM')
