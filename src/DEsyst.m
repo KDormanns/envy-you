@@ -2,6 +2,7 @@ function [dy] = DEsyst (time,state)
 % Below all conservation equation are calculated. 
 % Note that "getRef" is the function that contains the input stimulus of 
 % the model. 
+global J_PLC
 
 dy = zeros(size(state));
 all_constants(); % All constants used in this model
@@ -48,6 +49,8 @@ dy(ind.I_j) 	= EC(flu.IP3_coup_j) + J_PLC - EC(flu.J_degrad_j)  ;
 dy(ind.Mp)      = K4_c*state(ind.AMp) + SMC(flu.K1_c)*SMC(flu.M) - (SMC(flu.K2_c) + K3_c)*state(ind.Mp);
 dy(ind.AMp)     = K3_c*state(ind.Mp) + SMC(flu.K6_c)*state(ind.AM) - (K7_c + SMC(flu.K5_c))*state(ind.AMp);
 dy(ind.AM)      = SMC(flu.K5_c)*state(ind.AMp) - (K7_c + SMC(flu.K6_c))*state(ind.AM);
+
+
 
 % Radius change
 
@@ -102,4 +105,7 @@ dy(ind.R)= R0pas_r/nu_r *(state(ind.R)*P_r/SMC(flu.h_r) - E_r * ((state(ind.R) -
        dy(ind.eNOS_act)   = ((K_dis*state(ind.Ca_j))/(K_eNOS+state(ind.Ca_j)))-mu2*state(ind.eNOS_act)+g_max*EC(flu.F_tau_w) ;          % (104)
        dy(ind.NOj)        = V_eNOS*(LArg)/((LArg^2+1)^0.5)*(state(ind.eNOS_act)) - (state(ind.NOj)-state(ind.NOi))/tau_ji   - k_O2*(state(ind.NOj))^2*Oj - state(ind.NOj)*4*3300/(25^2);
 
+% Yang2005 - simplified Hai & Murphy model
+       dy(ind.M_Y)     = - k_mlck * state(ind.M_Y) + SMC(flu.kmlcp) * state(ind.Mp_Y);
+       dy(ind.Mp_Y)    = + k_mlck * state(ind.M_Y) - SMC(flu.kmlcp) * state(ind.Mp_Y);
 end

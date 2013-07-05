@@ -87,7 +87,7 @@ SMC(flu.J_NaCa_i)           = G_NaCa * state(ind.Ca_i)* ( state(ind.v_i) - v_NaC
 SMC(flu.J_NaK_i)            = F_NaK;
 SMC(flu.J_Cl_i)             = G_Cl * ( state(ind.v_i) - v_Cl );
 SMC(flu.J_K_i)              = G_K * state(ind.w_i) * ( state(ind.v_i) - vK_i );
-SMC(flu.Kactivation_i)      = ( state(ind.Ca_i) + c_w )^2 / ( (state(ind.Ca_i) + c_w)^2 + bet*exp(-(state(ind.v_i) - SMC(flu.v_Ca3))/R_K) );
+SMC(flu.Kactivation_i)      = ( state(ind.Ca_i) + c_w )^2 / ( (state(ind.Ca_i) + c_w)^2 + bet*exp(-(state(ind.v_i) - v_Ca3) /R_K) );
 SMC(flu.J_degrad_i)         = k_i * state(ind.I_i);
 SMC(flu.J_stretch_i)        = G_stretch/(1+exp(-alpha1*(P_str*state(ind.R)/SMC(flu.h_r) - sig0))) * (state(ind.v_i) - Esac);
 
@@ -151,12 +151,15 @@ SMC(flu.R_NO)           = (state(ind.NOi)/(state(ind.NOi)+K_m_NO)) ;
 SMC(flu.v_Ca3)          = V_cGMP*SMC(flu.R_cGMP1) - V_NO*SMC(flu.R_NO) - V_b;
 SMC(flu.P_O)            = (state(ind.Ca_i) + c_wi )^2/( (state(ind.Ca_i) + c_wi )^2 + bet_i*exp(-(state(ind.v_i) - SMC(flu.v_Ca3)) / (R_Kfit)) );
 SMC(flu.R_cGMP2)        = (state(ind.cGMP)^2)/(state(ind.cGMP)^2+K_m_mlcp^2);
-SMC(flu.K2_c)           = k_mlcp_b+k_mlcp_c*SMC(flu.R_cGMP2);
-SMC(flu.K5_c)           = SMC(flu.K2);
+SMC(flu.K2_c)           = 17.64*k_mlcp_b+17.64*k_mlcp_c*SMC(flu.R_cGMP2);
+SMC(flu.K5_c)           = SMC(flu.K2_c);
+SMC(flu.kmlcp)          = k_mlcp_b + k_mlcp_c * SMC(flu.R_cGMP2);
+
 
 % SMC(flu.test)           = (((K_dis*state(ind.Ca_j))/(K_eNOS+state(ind.Ca_j)))-mu2*state(ind.NOj)+g_max*EC(flu.F_tau_w)) - (state(ind.NOj)-state(ind.NOi))/tau_ji - k_O2*(state(ind.NOj))^2*Oj;
 
 
+% SMC(flu.Kactivation_i)      = ( state(ind.Ca_i) + c_w )^2 / ( (state(ind.Ca_i) + c_w)^2 + bet*exp(-(state(ind.v_i) - SMC(flu.v_Ca3))/R_K) );
 
 
 

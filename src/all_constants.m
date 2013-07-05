@@ -83,7 +83,7 @@ vK_i		= -94;
 lab 		= 45;
 c_w			= 0;
 bet			= 0.13;
-%v_Ca3		= -27; % cGMP and NO dependent
+
 
 R_K			= 12;
 k_i			= 0.1;
@@ -278,6 +278,9 @@ K_m_NO = 0.2;     		    % [microM]
 k_mlcp_b = 0.0086;          % [s^{-1}]
 k_mlcp_c = 0.0327;          % [s^{-1}]
 K_m_mlcp = 5.5;        		% [microM]
+k_mlck = 1180;
+
+v_Ca3		= -27; % cGMP and NO dependent
 
 c_wi = 0; % translation factor for Ca dependence of KCa channel activation sigmoidal [microM] 
 bet_i= 0.13; % translation factor for membrane potential dependence of KCa channel activation sigmoidal [microM^2] 

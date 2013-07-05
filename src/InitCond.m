@@ -28,7 +28,7 @@ function STATES = InitCond()
     STATES(ind.v_j)     = -75;            % mV celmembrane of EC
     STATES(ind.I_j)     = 0.1;            % IP3 concentration in EC
     
-    STATES(ind.Mp)      = 0.25;
+    STATES(ind.Mp)      = 0.25;  %Mp + M + AMp + AM = 1 !
     STATES(ind.AMp)     = 0.25;
     STATES(ind.AM)      = 0.25;
     
@@ -45,5 +45,7 @@ function STATES = InitCond()
     STATES(ind.E_b)     = 1/3;
     STATES(ind.E_6c)     = 1/3;
     STATES(ind.E_5c)    = 1/3;
-
+    STATES(ind.cGMP)    = 0.0;
+    STATES(ind.M_Y)     = 0.5; %M_Y + Mp_Y = 1 !
+    STATES(ind.Mp_Y)    = 0.5; 
 end

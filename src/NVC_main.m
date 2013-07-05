@@ -14,7 +14,7 @@ m = 2;
 
 % Time span for which the simulation runs:
 t_start = 0;
-t_end = 300;
+t_end = 2500;
 
 %% load the constants for the fluxes and pointers:
 all_indices();

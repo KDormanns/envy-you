@@ -42,6 +42,8 @@ ind.Ca_n            = i+7;        % the calcium concentration in the neuron in n
 ind.E_b             = i+8;  
 ind.E_6c            = i+9;  
 ind.E_5c            = i+10;  
+ind.M_Y             = i+11; 
+ind.Mp_Y            = i+12; 
 
 %% NO pathway - NE
 j = 0;
@@ -53,7 +55,7 @@ flu.phi_N           = j+5 ;
 flu.dphi_N          = j+6 ; 
 flu.N               = j+7 ;  
 flu.CaM             = j+8 ; 
-flu.NO              = j+9 ; % NO diffusion flux from the neuron to the SMC
+%flu.NOni              = j+9 ; % NO diffusion flux from the neuron to the SMC
 
 %% Astrocyte indices
 flu.R_s     = 1;%R_tot- R_k;
@@ -72,19 +74,19 @@ flu.E_K_k   = 12;
 flu.E_Cl_k  = 13;
 flu.E_NBC_k = 14;
 
-flu.v_k = 15;     
+flu.v_k     = 15;     
 
 flu.J_KCC1_k =16;
 flu.J_NBC_k  =17;
-flu.J_NKCC1_k  =18;
+flu.J_NKCC1_k =18;
 flu.J_NaK_k  =19; 
 flu.J_Na_k   =20;
 flu.J_K_k    =21;
 
-flu.J_BK_k  =22;
-flu.E_BK_k  =23;
-flu.w_inf   =24;
-flu.phi_w   =25;
+flu.J_BK_k  = 22;
+flu.E_BK_k  = 23;
+flu.w_inf   = 24;
+flu.phi_w   = 25;
 
 
 
@@ -113,14 +115,14 @@ flu.G_KIR_i         = 19;
 flu.J_KIR_i         = 20;
 
 flu.M               = 21;
-flu.h_r             = 22;
-flu.E_K_i           = 23;
+flu.E_K_i           = 22;
+flu.h_r             = 23;
+
 flu.K1_c            = 24;
 flu.K6_c            = 25;
- 
 
 %% NO pathway - SMC
-k = flu.K6_c;
+k = 25;
 flu.k4              = k+1;   
 flu.R_cGMP1         = k+2;   
 flu.R_NO            = k+3;   
@@ -129,8 +131,7 @@ flu.P_O             = k+5;
 flu.R_cGMP2         = k+6;  
 flu.K2_c            = k+7;  
 flu.K5_c            = k+8; 
-flu.R_cGMP2         = k+9; 
-flu.v_Ca3           = k+10; 
+flu.kmlcp           = k+9; 
 
 %% EC-pointers
 
@@ -156,8 +157,8 @@ flu.J_stretch_j     = 17;
 l = flu.J_stretch_j;
 flu.W_tau_w         = l+1;  
 flu.F_tau_w         = l+2;  
-flu.NOji            = l+3; % NO diffusion flux from the EC into the SMC
-flu.NOjl            = l+4; % NO diffusion flux from the EC into the lumen
+% flu.NOji            = l+3; % NO diffusion flux from the EC into the SMC
+% flu.NOjl            = l+4; % NO diffusion flux from the EC into the lumen
 
 
 

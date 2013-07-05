@@ -5,24 +5,24 @@ all_constants();
 
 linestylle = ':';
 
-n = zeros(1,9);     % fluxes Neuron
+n = zeros(1,8);     % fluxes Neuron
 a = zeros(1,25);    % fluxes AC
-s = zeros(1,35);    % fluxes SMC
-e = zeros(1,21);    % fluxes EC
-f = zeros(1,34);    % ODE solutions
-dfdt = zeros(1,34); % ODEs - rate of change
+s = zeros(1,34);    % fluxes SMC
+e = zeros(1,19);    % fluxes EC
+f = zeros(1,36);    % ODE solutions - oder numODE
+dfdt = zeros(1,36); % ODEs - rate of change - oder numODE
 t = zeros(1,1);     % time
 input = zeros(1,4); % input
 
 
 neoff    =           0; 
-acoff    = neoff   + length(n);
-smcoff   = acoff   + length(a);
-ecoff    = smcoff  + length(s);
-stoff    = ecoff   + length(e);
-dfdtoff  = stoff   + length(f);
-tijdoff  = dfdtoff + length(dfdt);
-inputoff = tijdoff + length(t);
+acoff    = neoff   + length(n)
+smcoff   = acoff   + length(a)
+ecoff    = smcoff  + length(s)
+stoff    = ecoff   + length(e)
+dfdtoff  = stoff   + length(f)
+tijdoff  = dfdtoff + length(dfdt)
+inputoff = tijdoff + length(t)
 
 
 time = DATA(:,tijdoff+1);
